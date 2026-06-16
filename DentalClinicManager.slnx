@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../DentalApp.core/DentalApp.core.csproj" Id="93b2a713-13d8-4a34-9f17-a170732cdb13" />
+  <Project Path="DentalClinicManager/DentalClinicManager.csproj" />
+</Solution>
