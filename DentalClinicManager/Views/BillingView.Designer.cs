@@ -22,6 +22,8 @@
             tsbRefresh = new System.Windows.Forms.ToolStripButton();
             pnlSearch = new System.Windows.Forms.Panel();
             txtSearch = new System.Windows.Forms.TextBox();
+            lblStatusFilter = new System.Windows.Forms.Label();
+            cmbStatusFilter = new System.Windows.Forms.ComboBox();
             lblCount = new System.Windows.Forms.Label();
             dgvBills = new System.Windows.Forms.DataGridView();
             colId = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -99,6 +101,8 @@
             // ── pnlSearch ─────────────────────────────────────────────
             pnlSearch.BackColor = System.Drawing.Color.FromArgb(245, 248, 252);
             pnlSearch.Controls.Add(txtSearch);
+            pnlSearch.Controls.Add(lblStatusFilter);
+            pnlSearch.Controls.Add(cmbStatusFilter);
             pnlSearch.Controls.Add(lblCount);
             pnlSearch.Dock = System.Windows.Forms.DockStyle.Top;
             pnlSearch.Name = "pnlSearch";
@@ -114,11 +118,29 @@
             txtSearch.Size = new System.Drawing.Size(320, 24);
             txtSearch.TextChanged += txtSearch_TextChanged;
 
+            // ── lblStatusFilter ───────────────────────────────────────
+            lblStatusFilter.AutoSize = true;
+            lblStatusFilter.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            lblStatusFilter.ForeColor = System.Drawing.Color.FromArgb(27, 58, 87);
+            lblStatusFilter.Location = new System.Drawing.Point(340, 12);
+            lblStatusFilter.Name = "lblStatusFilter";
+            lblStatusFilter.Text = "Status";
+
+            // ── cmbStatusFilter ───────────────────────────────────────
+            cmbStatusFilter.BackColor = System.Drawing.Color.FromArgb(235, 242, 250);
+            cmbStatusFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cmbStatusFilter.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            cmbStatusFilter.Items.AddRange(new object[] { "All", "Paid", "Unpaid" });
+            cmbStatusFilter.Location = new System.Drawing.Point(394, 8);
+            cmbStatusFilter.Name = "cmbStatusFilter";
+            cmbStatusFilter.Size = new System.Drawing.Size(105, 25);
+            cmbStatusFilter.SelectedIndexChanged += cmbStatusFilter_SelectedIndexChanged;
+
             // ── lblCount ──────────────────────────────────────────────
             lblCount.AutoSize = true;
             lblCount.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             lblCount.ForeColor = System.Drawing.Color.FromArgb(27, 58, 87);
-            lblCount.Location = new System.Drawing.Point(340, 12);
+            lblCount.Location = new System.Drawing.Point(512, 12);
             lblCount.Name = "lblCount";
             lblCount.Text = "Total: 0";
             lblCount.Click += lblCount_Click;
@@ -137,6 +159,7 @@
             dgvBills.Name = "dgvBills";
             dgvBills.Font = new System.Drawing.Font("Segoe UI", 9F);
             dgvBills.GridColor = System.Drawing.Color.FromArgb(220, 230, 240);
+            dgvBills.ColumnHeaderMouseClick += dgvBills_ColumnHeaderMouseClick;
             dgvBills.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvBills.ColumnHeadersHeight = 36;
             dgvBills.RowTemplate.Height = 32;
@@ -225,6 +248,8 @@
         private System.Windows.Forms.ToolStripButton tsbRefresh;
         private System.Windows.Forms.Panel pnlSearch;
         private System.Windows.Forms.TextBox txtSearch;
+        private System.Windows.Forms.Label lblStatusFilter;
+        private System.Windows.Forms.ComboBox cmbStatusFilter;
         private System.Windows.Forms.Label lblCount;
         private System.Windows.Forms.DataGridView dgvBills;
         private System.Windows.Forms.DataGridViewTextBoxColumn colId;

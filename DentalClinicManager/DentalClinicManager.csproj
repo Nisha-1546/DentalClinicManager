@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\DentalApp.core\DentalApp.core.csproj" />
+    <ProjectReference Include="..\DentalApp.core\DentalApp.core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

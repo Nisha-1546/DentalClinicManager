@@ -9,6 +9,8 @@ namespace DentalApp.core.Contracts
         void Update(Patient patient);
         void Delete(int id);
         Patient? GetById(int id);
+        List<Patient> GetAll();
+        List<Patient> Search(string query);
 
         Task<List<Patient>> SearchAsync(string query);
         Task<List<Patient>> GetAllAsync(); 

@@ -30,6 +30,8 @@
             flpSearch = new System.Windows.Forms.FlowLayoutPanel();
             lblSearch = new System.Windows.Forms.Label();
             txtSearch = new System.Windows.Forms.TextBox();
+            lblStatusFilter = new System.Windows.Forms.Label();
+            cmbStatusFilter = new System.Windows.Forms.ComboBox();
             lblCount = new System.Windows.Forms.Label();
             dgvAppointments = new System.Windows.Forms.DataGridView();
             colId = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -158,6 +160,8 @@
             flpSearch.BackColor = System.Drawing.Color.FromArgb(245, 248, 252);
             flpSearch.Controls.Add(lblSearch);
             flpSearch.Controls.Add(txtSearch);
+            flpSearch.Controls.Add(lblStatusFilter);
+            flpSearch.Controls.Add(cmbStatusFilter);
             flpSearch.Controls.Add(lblCount);
             flpSearch.Dock = System.Windows.Forms.DockStyle.Fill;
             flpSearch.Name = "flpSearch";
@@ -184,12 +188,33 @@
             txtSearch.Size = new System.Drawing.Size(220, 24);
             txtSearch.TextChanged += txtSearch_TextChanged;
 
+            // ── lblStatusFilter ───────────────────────────────────────
+            lblStatusFilter.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            lblStatusFilter.AutoSize = true;
+            lblStatusFilter.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
+            lblStatusFilter.ForeColor = System.Drawing.Color.FromArgb(27, 58, 87);
+            lblStatusFilter.Location = new System.Drawing.Point(298, 15);
+            lblStatusFilter.Name = "lblStatusFilter";
+            lblStatusFilter.Text = "Status";
+
+            // ── cmbStatusFilter ───────────────────────────────────────
+            cmbStatusFilter.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            cmbStatusFilter.BackColor = System.Drawing.Color.FromArgb(235, 242, 250);
+            cmbStatusFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cmbStatusFilter.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            cmbStatusFilter.ForeColor = System.Drawing.Color.FromArgb(30, 30, 30);
+            cmbStatusFilter.Items.AddRange(new object[] { "All", "Scheduled", "Completed", "Cancelled" });
+            cmbStatusFilter.Location = new System.Drawing.Point(354, 10);
+            cmbStatusFilter.Name = "cmbStatusFilter";
+            cmbStatusFilter.Size = new System.Drawing.Size(115, 25);
+            cmbStatusFilter.SelectedIndexChanged += cmbStatusFilter_SelectedIndexChanged;
+
             // ── lblCount ──────────────────────────────────────────────
             lblCount.Anchor = System.Windows.Forms.AnchorStyles.Left;
             lblCount.AutoSize = true;
             lblCount.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
             lblCount.ForeColor = System.Drawing.Color.FromArgb(41, 98, 146);
-            lblCount.Location = new System.Drawing.Point(298, 15);
+            lblCount.Location = new System.Drawing.Point(482, 15);
             lblCount.Name = "lblCount";
             lblCount.Text = "Total: 0";
             lblCount.Click += lblCount_Click;
@@ -223,6 +248,7 @@
             dgvAppointments.RowHeadersVisible = false;
             dgvAppointments.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             dgvAppointments.TabIndex = 2;
+            dgvAppointments.ColumnHeaderMouseClick += dgvAppointments_ColumnHeaderMouseClick;
 
             // ── Columns ───────────────────────────────────────────────
             colId.DataPropertyName = "Id";
@@ -311,6 +337,8 @@
         private System.Windows.Forms.FlowLayoutPanel flpSearch;
         private System.Windows.Forms.Label lblSearch;
         private System.Windows.Forms.TextBox txtSearch;
+        private System.Windows.Forms.Label lblStatusFilter;
+        private System.Windows.Forms.ComboBox cmbStatusFilter;
         private System.Windows.Forms.Label lblCount;
         private System.Windows.Forms.DataGridView dgvAppointments;
         private System.Windows.Forms.DataGridViewTextBoxColumn colId;

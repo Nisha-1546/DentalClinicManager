@@ -3,6 +3,7 @@ using DentalApp.core.Models;
 using DentalApp.core.Utilities;
 using DentalClinicManager.Forms;
 using System.ComponentModel;
+using System.Linq;
 
 namespace DentalClinicManager.Views
 {
@@ -12,6 +13,9 @@ namespace DentalClinicManager.Views
         private readonly IPatientService _patientService;
         private readonly IBillingService _billingService;
         private BindingSource _bindingSource = new BindingSource();
+        private List<Appointment> _appointments = [];
+        private string _sortProperty = nameof(Appointment.AppDate);
+        private ListSortDirection _sortDirection = ListSortDirection.Descending;
 
         public AppointmentView(IAppointmentService appointmentService, IPatientService patientService, IBillingService billingService)
         {
@@ -23,6 +27,7 @@ namespace DentalClinicManager.Views
 
             dgvAppointments.AutoGenerateColumns = false;
             dgvAppointments.DataSource = _bindingSource;
+            cmbStatusFilter.SelectedIndex = 0;
 
             LoadAppointments();
         }
@@ -30,9 +35,8 @@ namespace DentalClinicManager.Views
        
         private void LoadAppointments()
         {
-            var appointments = _appointmentService.GetAll();
-            _bindingSource.DataSource = appointments;
-            lblCount.Text = $"Total: {appointments.Count}";
+            _appointments = _appointmentService.GetAll();
+            ApplyFilters();
         }
 
         
@@ -177,11 +181,85 @@ namespace DentalClinicManager.Views
       
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            var appointments = _appointmentService.Search(txtSearch.Text);
-            _bindingSource.DataSource = appointments;
-            lblCount.Text = $"Showing: {appointments.Count}";
+            ApplyFilters();
+        }
+
+        private void cmbStatusFilter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void dgvAppointments_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            var propertyName = dgvAppointments.Columns[e.ColumnIndex].DataPropertyName;
+            if (string.IsNullOrWhiteSpace(propertyName)) return;
+
+            if (_sortProperty == propertyName)
+            {
+                _sortDirection = _sortDirection == ListSortDirection.Ascending
+                    ? ListSortDirection.Descending
+                    : ListSortDirection.Ascending;
+            }
+            else
+            {
+                _sortProperty = propertyName;
+                _sortDirection = ListSortDirection.Ascending;
+            }
+
+            ApplyFilters();
+        }
+
+        private void ApplyFilters()
+        {
+            var query = txtSearch.Text.Trim();
+            var status = cmbStatusFilter.SelectedItem?.ToString() ?? "All";
+            IEnumerable<Appointment> appointments = _appointments;
+
+            if (!string.Equals(status, "All", StringComparison.OrdinalIgnoreCase))
+                appointments = appointments.Where(a => string.Equals(a.Status, status, StringComparison.OrdinalIgnoreCase));
+
+            if (!string.IsNullOrWhiteSpace(query))
+            {
+                appointments = appointments.Where(a =>
+                    Contains(a.PatientName, query) ||
+                    Contains(a.Doctor, query) ||
+                    Contains(a.Treatment, query) ||
+                    Contains(a.Status, query));
+            }
+
+            var sortedAppointments = SortAppointments(appointments);
+            _bindingSource.DataSource = sortedAppointments;
+            lblCount.Text = string.IsNullOrWhiteSpace(query) && status == "All"
+                ? $"Total: {sortedAppointments.Count}"
+                : $"Showing: {sortedAppointments.Count}";
+        }
+
+        private List<Appointment> SortAppointments(IEnumerable<Appointment> appointments)
+        {
+            return (_sortProperty, _sortDirection) switch
+            {
+                (nameof(Appointment.PatientName), ListSortDirection.Ascending) => appointments.OrderBy(a => a.PatientName).ToList(),
+                (nameof(Appointment.PatientName), ListSortDirection.Descending) => appointments.OrderByDescending(a => a.PatientName).ToList(),
+                (nameof(Appointment.Doctor), ListSortDirection.Ascending) => appointments.OrderBy(a => a.Doctor).ToList(),
+                (nameof(Appointment.Doctor), ListSortDirection.Descending) => appointments.OrderByDescending(a => a.Doctor).ToList(),
+                (nameof(Appointment.AppDate), ListSortDirection.Ascending) => appointments.OrderBy(a => a.AppDate).ThenBy(a => a.AppTime).ToList(),
+                (nameof(Appointment.AppDate), ListSortDirection.Descending) => appointments.OrderByDescending(a => a.AppDate).ThenByDescending(a => a.AppTime).ToList(),
+                (nameof(Appointment.AppTime), ListSortDirection.Ascending) => appointments.OrderBy(a => a.AppTime).ToList(),
+                (nameof(Appointment.AppTime), ListSortDirection.Descending) => appointments.OrderByDescending(a => a.AppTime).ToList(),
+                (nameof(Appointment.Treatment), ListSortDirection.Ascending) => appointments.OrderBy(a => a.Treatment).ToList(),
+                (nameof(Appointment.Treatment), ListSortDirection.Descending) => appointments.OrderByDescending(a => a.Treatment).ToList(),
+                (nameof(Appointment.Cost), ListSortDirection.Ascending) => appointments.OrderBy(a => a.Cost).ToList(),
+                (nameof(Appointment.Cost), ListSortDirection.Descending) => appointments.OrderByDescending(a => a.Cost).ToList(),
+                (nameof(Appointment.Status), ListSortDirection.Ascending) => appointments.OrderBy(a => a.Status).ToList(),
+                (nameof(Appointment.Status), ListSortDirection.Descending) => appointments.OrderByDescending(a => a.Status).ToList(),
+                (_, ListSortDirection.Descending) => appointments.OrderByDescending(a => a.Id).ToList(),
+                _ => appointments.OrderBy(a => a.Id).ToList()
+            };
         }
 
         private void lblCount_Click(object sender, EventArgs e) { }
+
+        private static bool Contains(string? value, string query) =>
+            value?.IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0;
     }
 }

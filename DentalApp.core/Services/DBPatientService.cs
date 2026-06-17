@@ -131,6 +131,50 @@ namespace DentalApp.core.Services
             return null;
         }
 
+        public List<Patient> GetAll()
+        {
+            List<Patient> list = [];
+
+            using SqlConnection connection = new(_connectionString);
+            connection.Open();
+
+            string sql = "SELECT * FROM Patient ORDER BY Id";
+            SqlCommand cmd = new(sql, connection);
+            SqlDataReader r = cmd.ExecuteReader();
+
+            while (r.Read())
+            {
+                list.Add(MapRow(r));
+            }
+
+            return list;
+        }
+
+        public List<Patient> Search(string q)
+        {
+            List<Patient> list = [];
+
+            using SqlConnection connection = new(_connectionString);
+            connection.Open();
+
+            string sql = @"SELECT * FROM Patient
+                   WHERE Name LIKE @q
+                   OR Phone LIKE @q
+                   OR Email LIKE @q
+                   ORDER BY Id";
+
+            SqlCommand cmd = new(sql, connection);
+            cmd.Parameters.AddWithValue("@q", "%" + q + "%");
+            SqlDataReader r = cmd.ExecuteReader();
+
+            while (r.Read())
+            {
+                list.Add(MapRow(r));
+            }
+
+            return list;
+        }
+
 
         public async Task<List<Patient>> GetAllAsync()
         {
@@ -145,15 +189,7 @@ namespace DentalApp.core.Services
 
             while (await r.ReadAsync())
             {
-                list.Add(new Patient
-                {
-                    Id = Convert.ToInt32(r["Id"]),
-                    Name = r["Name"].ToString(),
-                    Phone = r["Phone"].ToString(),
-                    Email = r["Email"].ToString(),
-                    Address = r["Address"].ToString(),
-                    CreatedAt = Convert.ToDateTime(r["CreatedAt"])
-                });
+                list.Add(MapRow(r));
             }
 
             return list;
@@ -178,18 +214,20 @@ namespace DentalApp.core.Services
 
             while (await r.ReadAsync())
             {
-                list.Add(new Patient
-                {
-                    Id = Convert.ToInt32(r["Id"]),
-                    Name = r["Name"].ToString(),
-                    Phone = r["Phone"].ToString(),
-                    Email = r["Email"].ToString(),
-                    Address = r["Address"].ToString(),
-                    CreatedAt = Convert.ToDateTime(r["CreatedAt"])
-                });
+                list.Add(MapRow(r));
             }
 
             return list;
         }
+
+        private static Patient MapRow(SqlDataReader r) => new()
+        {
+            Id = Convert.ToInt32(r["Id"]),
+            Name = r["Name"].ToString(),
+            Phone = r["Phone"].ToString(),
+            Email = r["Email"].ToString(),
+            Address = r["Address"].ToString(),
+            CreatedAt = Convert.ToDateTime(r["CreatedAt"])
+        };
     }
 }

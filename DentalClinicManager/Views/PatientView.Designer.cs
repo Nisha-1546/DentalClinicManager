@@ -27,6 +27,8 @@
             flpSearch = new System.Windows.Forms.FlowLayoutPanel();
             lblSearch = new System.Windows.Forms.Label();
             txtSearch = new System.Windows.Forms.TextBox();
+            lblFilter = new System.Windows.Forms.Label();
+            cmbFilter = new System.Windows.Forms.ComboBox();
             lblCount = new System.Windows.Forms.Label();
             dgvPatients = new System.Windows.Forms.DataGridView();
             colId = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -142,6 +144,8 @@
             flpSearch.BackColor = System.Drawing.Color.FromArgb(245, 248, 252);
             flpSearch.Controls.Add(lblSearch);
             flpSearch.Controls.Add(txtSearch);
+            flpSearch.Controls.Add(lblFilter);
+            flpSearch.Controls.Add(cmbFilter);
             flpSearch.Controls.Add(lblCount);
             flpSearch.Dock = System.Windows.Forms.DockStyle.Fill;
             flpSearch.Location = new System.Drawing.Point(0, 0);
@@ -173,12 +177,35 @@
             txtSearch.TabIndex = 3;
             txtSearch.TextChanged += txtSearch_TextChanged;
 
+            // ── lblFilter ─────────────────────────────────────────────
+            lblFilter.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            lblFilter.AutoSize = true;
+            lblFilter.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
+            lblFilter.ForeColor = System.Drawing.Color.FromArgb(27, 58, 87);
+            lblFilter.Location = new System.Drawing.Point(298, 15);
+            lblFilter.Name = "lblFilter";
+            lblFilter.TabIndex = 6;
+            lblFilter.Text = "Filter";
+
+            // ── cmbFilter ─────────────────────────────────────────────
+            cmbFilter.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            cmbFilter.BackColor = System.Drawing.Color.FromArgb(235, 242, 250);
+            cmbFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cmbFilter.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            cmbFilter.ForeColor = System.Drawing.Color.FromArgb(30, 30, 30);
+            cmbFilter.Items.AddRange(new object[] { "All", "Name", "Phone", "Email" });
+            cmbFilter.Location = new System.Drawing.Point(342, 10);
+            cmbFilter.Name = "cmbFilter";
+            cmbFilter.Size = new System.Drawing.Size(100, 25);
+            cmbFilter.TabIndex = 7;
+            cmbFilter.SelectedIndexChanged += cmbFilter_SelectedIndexChanged;
+
             // ── lblCount ──────────────────────────────────────────────
             lblCount.Anchor = System.Windows.Forms.AnchorStyles.Left;
             lblCount.AutoSize = true;
             lblCount.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
             lblCount.ForeColor = System.Drawing.Color.FromArgb(41, 98, 146);
-            lblCount.Location = new System.Drawing.Point(298, 15);
+            lblCount.Location = new System.Drawing.Point(455, 15);
             lblCount.Name = "lblCount";
             lblCount.TabIndex = 4;
             lblCount.Text = "Total: 0";
@@ -213,6 +240,7 @@
             dgvPatients.RowHeadersVisible = false;
             dgvPatients.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             dgvPatients.TabIndex = 2;
+            dgvPatients.ColumnHeaderMouseClick += dgvPatients_ColumnHeaderMouseClick;
 
             // ── colId ─────────────────────────────────────────────────
             colId.DataPropertyName = "Id";
@@ -289,6 +317,8 @@
         private System.Windows.Forms.FlowLayoutPanel flpSearch;
         private System.Windows.Forms.Label lblSearch;
         private System.Windows.Forms.TextBox txtSearch;
+        private System.Windows.Forms.Label lblFilter;
+        private System.Windows.Forms.ComboBox cmbFilter;
         private System.Windows.Forms.Label lblCount;
         private System.Windows.Forms.DataGridView dgvPatients;
         private System.Windows.Forms.DataGridViewTextBoxColumn colId;

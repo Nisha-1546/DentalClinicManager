@@ -180,10 +180,13 @@ According to the project rubric, the important evaluation areas are:
 ## Recommended / Bonus Features Included
 
 - Search functionality in patients, appointments, and billing
+- Dropdown filters for patient search fields, appointment status, and billing status
 - Dashboard with summary statistics and chart on one screen
 - Status bar showing the current section and date/time
 - Record count labels for lists
-- Async method support in the patient service contract and implementation
+- Async loading in the patient list using `GetAllAsync`
+- Column sorting in DataGridView screens by clicking column headers
+- Loading state in the patient list while data is being loaded
 
 ## Main Viva Points
 
