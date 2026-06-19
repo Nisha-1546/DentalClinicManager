@@ -1,7 +1,15 @@
 # Dental Clinic Manager
 
 Dental Clinic Manager is a Windows Forms desktop application built in C# for managing the daily work of a dental clinic. It stores clinic data in SQL Server and provides separate modules for patients, appointments, billing, and dashboard reporting.
+## ✨ Features
 
+- Patient Management: Easily add, update, and track patient profiles and medical histories.
+- Appointment Scheduling: Book, reschedule, and manage daily appointments for dentists.
+- Treatment & Billing Tracker: Keep a record of dental treatments provided and automate invoice generation.
+- Secure Database: Uses SQL Server to ensure data integrity, security, and quick search capabilities.
+- Modern UI: Clean and responsive interface designed for clinic administrators and doctors.
+
+---
 ## Project Information
 
 - Course: Advanced Programming (COSC-5136)
