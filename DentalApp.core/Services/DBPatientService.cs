@@ -1,4 +1,4 @@
-﻿using DentalApp.core.Contracts;
+using DentalApp.core.Contracts;
 using DentalApp.core.Models;
 using Microsoft.Data.SqlClient;
 using System.Text.RegularExpressions;
@@ -93,16 +93,10 @@ namespace DentalApp.core.Services
             deleteCmd.Parameters.AddWithValue("@Id", id);
             deleteCmd.ExecuteNonQuery();
 
-            string reseedSql = @"
-                IF (SELECT COUNT(*) FROM Patient) = 0
-                    DBCC CHECKIDENT ('Patient', RESEED, 0);
-                ELSE
-                BEGIN
-                    DECLARE @maxId INT = ISNULL((SELECT MAX(Id) FROM Patient), 0);
-                    DBCC CHECKIDENT ('Patient', RESEED, @maxId);
-                END";
-            SqlCommand reseedCmd = new(reseedSql, connection);
-            reseedCmd.ExecuteNonQuery();
+            // Identity reseed removed: reseeding Patient.Id after every delete
+            // causes Id reuse, which is unsafe if any other table (Appointments,
+            // Records, Invoices, etc.) references Patient.Id as a foreign key —
+            // a reused Id can attach a new patient's row to an old patient's history.
         }
 
         public Patient? GetById(int id)
