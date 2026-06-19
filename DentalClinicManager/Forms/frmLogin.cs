@@ -1,4 +1,4 @@
-﻿using DentalApp.core.Contracts;
+using DentalApp.core.Contracts;
 using DentalApp.core.Services;
 using DentalClinicManager.Forms;
 using System.Configuration;
@@ -24,9 +24,10 @@ namespace DentalClinicManager
                 return;
             }
 
-           
             if (username == "admin" && password == "admin123")
             {
+                ShowWelcomeMessage(username);
+
                 this.Hide();
                 var main = new MainDentalForm();
                 main.ShowDialog();
@@ -39,6 +40,25 @@ namespace DentalClinicManager
                 txtPassword.Clear();
                 txtPassword.Focus();
             }
+        }
+
+        private static void ShowWelcomeMessage(string username)
+        {
+            string greeting = DateTime.Now.Hour switch
+            {
+                < 12 => "Good Morning",
+                < 17 => "Good Afternoon",
+                _ => "Good Evening"
+            };
+
+            MessageBox.Show(
+                $"{greeting}, {username}!\n\n" +
+                $"Welcome to Dental Clinic Manager.\n" +
+                $"Today is {DateTime.Now:dddd, dd MMMM yyyy}.\n\n" +
+                $"Have a productive day caring for your patients.",
+                "Welcome",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
     }
 }
