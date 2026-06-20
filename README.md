@@ -190,18 +190,7 @@ According to the project rubric, the important evaluation areas are:
 - Column sorting in DataGridView screens by clicking column headers
 - Loading state in the patient list while data is being loaded
 
-## Main Viva Points
 
-During viva, explain these parts clearly:
-
-- How the project is divided into UI and core layers
-- How `App.config` provides the SQL Server connection string
-- How service classes use ADO.NET commands and parameters
-- How patient, appointment, and billing CRUD operations work
-- How validation is handled before saving data
-- How completing an appointment creates a bill
-- How dashboard counts and chart data are loaded from the database
-- How search filters records in the list screens
 
 ## Notes
 
